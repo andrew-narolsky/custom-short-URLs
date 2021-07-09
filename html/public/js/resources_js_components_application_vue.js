@@ -49,7 +49,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      link: '',
+      form: {
+        link: ''
+      },
       error: ''
     };
   },
@@ -57,22 +59,24 @@ __webpack_require__.r(__webpack_exports__);
     makeLink: function makeLink() {
       var _this = this;
 
+      if (!this.link) {
+        this.error = 'The field link is required';
+        Toast.fire({
+          icon: 'error',
+          title: 'The field link is required'
+        });
+        return false;
+      }
+
       axios.post('/api/make-link', this.form).then(function (response) {
         console.log(response);
       })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
+        _this.error = 'Error. Try later';
         Toast.fire({
           icon: 'error',
-          title: 'Invalid email or password'
+          title: 'Error. Try later'
         });
-      }); // if (!this.link) {
-      //     this.error = 'The field link is required';
-      //     Toast.fire({
-      //         icon: 'error',
-      //         title: 'The field link is required'
-      //     });
-      //     return false;
-      // }
+      });
     }
   }
 });
@@ -633,14 +637,14 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.link,
-                    expression: "link"
+                    value: _vm.form.link,
+                    expression: "form.link"
                   }
                 ],
                 staticClass: "form-control form-control-lg",
                 class: _vm.error ? "is-invalid" : "",
                 attrs: { type: "text", placeholder: "Enter your link" },
-                domProps: { value: _vm.link },
+                domProps: { value: _vm.form.link },
                 on: {
                   focus: function($event) {
                     _vm.error = ""
@@ -649,7 +653,7 @@ var render = function() {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.link = $event.target.value
+                    _vm.$set(_vm.form, "link", $event.target.value)
                   }
                 }
               }),

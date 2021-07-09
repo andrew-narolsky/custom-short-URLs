@@ -16,7 +16,7 @@
                         <label>Email address</label>
                         <input
                             @focus="error = ''"
-                            v-model="link"
+                            v-model="form.link"
                             :class = "(error) ? 'is-invalid' : ''"
                             class="form-control form-control-lg" type="text" placeholder="Enter your link">
                         <small class="text-danger" v-if="error">{{ error }}</small>
@@ -36,31 +36,33 @@
             }
         },
         data: () => ({
-            link: '',
+            form: {
+                link: ''
+            },
             error: '',
         }),
         methods: {
             makeLink() {
+                if (!this.link) {
+                    this.error = 'The field link is required';
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'The field link is required'
+                    });
+                    return false;
+                }
                 axios.post('/api/make-link', this.form)
                     .then(response => {
                         console.log(response)
                     })
                     .catch(error => {
-                        this.errors = error.response.data.errors;
+                        this.error = 'Error. Try later';
                         Toast.fire({
                             icon: 'error',
-                            title: 'Invalid email or password'
+                            title: 'Error. Try later'
                         });
                     }
                 );
-                // if (!this.link) {
-                //     this.error = 'The field link is required';
-                //     Toast.fire({
-                //         icon: 'error',
-                //         title: 'The field link is required'
-                //     });
-                //     return false;
-                // }
             }
         }
     }
