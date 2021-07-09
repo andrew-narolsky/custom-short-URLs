@@ -22,3 +22,10 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
 });
+
+Route::group([
+    'middleware' => 'api',
+    'namespace' => 'App\Http\Controllers\API',
+], function ($router) {
+    Route::post('make-link', 'MakeLinkController@index');
+});

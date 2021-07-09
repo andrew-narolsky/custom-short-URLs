@@ -27,10 +27,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   created: function created() {
     if (!User.loggedIn()) {
       this.$router.push('/login');
+    }
+  },
+  data: function data() {
+    return {
+      link: '',
+      error: ''
+    };
+  },
+  methods: {
+    makeLink: function makeLink() {
+      var _this = this;
+
+      axios.post('/api/make-link', this.form).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+        Toast.fire({
+          icon: 'error',
+          title: 'Invalid email or password'
+        });
+      }); // if (!this.link) {
+      //     this.error = 'The field link is required';
+      //     Toast.fire({
+      //         icon: 'error',
+      //         title: 'The field link is required'
+      //     });
+      //     return false;
+      // }
     }
   }
 });
@@ -568,7 +610,66 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _vm._m(0)
+    _c("div", { staticClass: "card" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.makeLink.apply(null, arguments)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("Email address")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.link,
+                    expression: "link"
+                  }
+                ],
+                staticClass: "form-control form-control-lg",
+                class: _vm.error ? "is-invalid" : "",
+                attrs: { type: "text", placeholder: "Enter your link" },
+                domProps: { value: _vm.link },
+                on: {
+                  focus: function($event) {
+                    _vm.error = ""
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.link = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.error
+                ? _c("small", { staticClass: "text-danger" }, [
+                    _vm._v(_vm._s(_vm.error))
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+              [_vm._v("Submit")]
+            )
+          ]
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -576,8 +677,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [_c("h1", [_vm._v("Welcome!")])])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h2", [_vm._v("Welcome! Make your first short link")])
     ])
   }
 ]
