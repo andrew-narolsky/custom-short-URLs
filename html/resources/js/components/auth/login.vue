@@ -1,29 +1,66 @@
 <template>
-    <div class="card">
-        <div class="card-body">
-            <form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+    <div class="col-6 offset-3">
+        <div class="card">
+            <div class="card-body">
+                <form @submit.prevent="login">
+                    <div class="form-group">
+                        <label>Email address</label>
+                        <input
+                            v-model="form.email"
+                            :class = "(errors.email) ? 'is-invalid' : ''"
+                            class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email">
+                        <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input
+                            v-model="form.password"
+                            :class = "(errors.password) ? 'is-invalid' : ''"
+                            class="form-control form-control-lg" type="password" name="password" placeholder="Enter your password">
+                        <small class="text-danger" v-if="errors.password">{{ errors.password[0] }}</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "login"
+        created() {
+            if (User.loggedIn()) {
+                this.$router.push('/application');
+            }
+        },
+        data: () => ({
+            form: {
+                email: 'qwerty@i.ua',
+                password: 'password'
+            },
+            errors: {}
+        }),
+        methods: {
+            login() {
+                axios.post('/api/auth/login', this.form)
+                    .then(response => {
+                        User.responseAfterLogin(response);
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Signed in successfully'
+                        });
+                        this.$router.push('application');
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors;
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Invalid email or password'
+                        });
+                    }
+                );
+            }
+        }
     }
 </script>
 

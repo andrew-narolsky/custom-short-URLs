@@ -1,23 +1,19 @@
-// Admin
-let application = require('./components/application').default;
-// Auth
-let login = require('./components/auth/login').default;
-let logout = require('./components/auth/logout').default;
-
 export const routes = [
-    // Admin
+    // Application
     {
-        path: '/',
-        component: application,
+        path: '/application',
+        component: () => import('./components/application'),
         name: 'application'
     },
     // Auth
     {
-        path: '/login',
-        component: login
+        path: '/',
+        component: () => import('./components/auth/login'),
+        name: 'login'
     },
     {
         path: '/logout',
-        component: logout
+        component: () => import('./components/auth/logout'),
+        name: 'logout'
     }
 ];

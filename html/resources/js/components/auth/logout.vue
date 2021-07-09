@@ -4,10 +4,13 @@
 
 <script>
     export default {
-        name: "logout"
+        created() {
+            AppStorage.clear();
+            Toast.fire({
+                icon: 'success',
+                title: 'Logout successfully'
+            });
+            this.$router.push('/');
+        }
     }
 </script>
-
-<style scoped>
-
-</style>

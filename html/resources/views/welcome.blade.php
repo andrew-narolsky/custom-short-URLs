@@ -11,12 +11,8 @@
     </head>
     <body class="antialiased">
         <div class="container">
-            <div class="row">
-                <div class="col-6 offset-3">
-                    <div class="wrapper" id="app">
-                        <router-view></router-view>
-                    </div>
-                </div>
+            <div class="row"  id="app">
+                <router-view></router-view>
             </div>
         </div>
 
