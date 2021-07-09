@@ -65,7 +65,7 @@
         }),
         methods: {
             makeLink() {
-                if (!this.link) {
+                if (!this.form.link) {
                     this.error = 'The field link is required';
                     Toast.fire({
                         icon: 'error',
@@ -73,9 +73,25 @@
                     });
                     return false;
                 }
-                axios.post('/api/make-link', this.form)
+                const config = {
+                    headers: { Authorization: 'Bearer' + AppStorage.getToken() }
+                };
+                axios.post('/api/make-link', this.form, config)
                     .then(response => {
-                        console.log(response)
+                        if (response.status === 200 && !response.data.code) {
+                            Swal.fire(
+                                'Good job!',
+                                'You make short link!',
+                                'success'
+                            );
+                            this.form.link = '';
+                        } else {
+                            this.error = response.data.code;
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.data.code
+                            });
+                        }
                     })
                     .catch(error => {
                         this.error = 'Error. Try later';
@@ -93,7 +109,6 @@
                 axios.get('/api/links', config)
                     .then(response => {
                         this.links = response.data;
-                        console.log(response)
                     })
                     .catch(error => {
                         console.log(error);

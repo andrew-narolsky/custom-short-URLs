@@ -82,7 +82,7 @@ __webpack_require__.r(__webpack_exports__);
     makeLink: function makeLink() {
       var _this = this;
 
-      if (!this.link) {
+      if (!this.form.link) {
         this.error = 'The field link is required';
         Toast.fire({
           icon: 'error',
@@ -91,8 +91,22 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      axios.post('/api/make-link', this.form).then(function (response) {
-        console.log(response);
+      var config = {
+        headers: {
+          Authorization: 'Bearer' + AppStorage.getToken()
+        }
+      };
+      axios.post('/api/make-link', this.form, config).then(function (response) {
+        if (response.status === 200 && !response.data.code) {
+          Swal.fire('Good job!', 'You make short link!', 'success');
+          _this.form.link = '';
+        } else {
+          _this.error = response.data.code;
+          Toast.fire({
+            icon: 'error',
+            title: response.data.code
+          });
+        }
       })["catch"](function (error) {
         _this.error = 'Error. Try later';
         Toast.fire({
@@ -111,7 +125,6 @@ __webpack_require__.r(__webpack_exports__);
       };
       axios.get('/api/links', config).then(function (response) {
         _this2.links = response.data;
-        console.log(response);
       })["catch"](function (error) {
         console.log(error);
       });
