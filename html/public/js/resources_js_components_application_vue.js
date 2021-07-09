@@ -73,7 +73,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       links: {},
       form: {
-        link: ''
+        link: '',
+        short_link: ''
       },
       error: ''
     };
@@ -98,8 +99,9 @@ __webpack_require__.r(__webpack_exports__);
       };
       axios.post('/api/make-link', this.form, config).then(function (response) {
         if (response.status === 200 && !response.data.code) {
-          Swal.fire('Good job!', 'You make short link!', 'success');
-          _this.form.link = '';
+          _this.form.short_link = response.data.shortUrl;
+
+          _this.saveLink();
         } else {
           _this.error = response.data.code;
           Toast.fire({
@@ -127,6 +129,28 @@ __webpack_require__.r(__webpack_exports__);
         _this2.links = response.data;
       })["catch"](function (error) {
         console.log(error);
+      });
+    },
+    saveLink: function saveLink(link, shortLink) {
+      var _this3 = this;
+
+      var config = {
+        headers: {
+          Authorization: 'Bearer' + AppStorage.getToken()
+        }
+      };
+      axios.post('/api/links', this.form, config).then(function (response) {
+        console.log(response);
+        Swal.fire('Good job!', 'You make short link!', 'success');
+        _this3.form.link = '';
+        _this3.form.short_link = '';
+
+        _this3.getLinks();
+      })["catch"](function (error) {
+        Toast.fire({
+          icon: 'error',
+          title: 'Error. Something went wrong!'
+        });
       });
     }
   }
@@ -739,9 +763,11 @@ var render = function() {
               _c("td", [_vm._v(_vm._s(link.link))]),
               _vm._v(" "),
               _c("td", [
-                _c("a", { attrs: { href: link.short_link } }, [
-                  _vm._v(_vm._s(link.short_link))
-                ])
+                _c(
+                  "a",
+                  { attrs: { target: "_blank", href: "//" + link.short_link } },
+                  [_vm._v(_vm._s(link.short_link))]
+                )
               ])
             ])
           }),

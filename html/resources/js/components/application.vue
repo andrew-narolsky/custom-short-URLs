@@ -39,7 +39,7 @@
                         <td>{{ link.id }}</td>
                         <td>{{ link.link }}</td>
                         <td>
-                            <a :href="link.short_link">{{ link.short_link }}</a>
+                            <a target="_blank" :href="'//' + link.short_link">{{ link.short_link }}</a>
                         </td>
                     </tr>
                 </tbody>
@@ -59,7 +59,8 @@
         data: () => ({
             links: {},
             form: {
-                link: ''
+                link: '',
+                short_link: '',
             },
             error: '',
         }),
@@ -79,12 +80,8 @@
                 axios.post('/api/make-link', this.form, config)
                     .then(response => {
                         if (response.status === 200 && !response.data.code) {
-                            Swal.fire(
-                                'Good job!',
-                                'You make short link!',
-                                'success'
-                            );
-                            this.form.link = '';
+                            this.form.short_link = response.data.shortUrl;
+                            this.saveLink();
                         } else {
                             this.error = response.data.code;
                             Toast.fire({
@@ -112,6 +109,30 @@
                     })
                     .catch(error => {
                         console.log(error);
+                    }
+                );
+            },
+            saveLink(link, shortLink) {
+                const config = {
+                    headers: { Authorization: 'Bearer' + AppStorage.getToken() }
+                };
+                axios.post('/api/links', this.form, config)
+                    .then(response => {
+                        console.log(response)
+                        Swal.fire(
+                            'Good job!',
+                            'You make short link!',
+                            'success'
+                        );
+                        this.form.link = '';
+                        this.form.short_link = '';
+                        this.getLinks();
+                    })
+                    .catch(error => {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Error. Something went wrong!'
+                        });
                     }
                 );
             }

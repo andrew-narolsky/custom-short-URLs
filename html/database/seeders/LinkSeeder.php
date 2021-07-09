@@ -17,11 +17,11 @@ class LinkSeeder extends Seeder
         DB::table('links')->insert([
             [
                 'link' => 'youtube.com/channel/UCHK4HD0ltu1-I212icLPt3g',
-                'short_link' => 'https://rb.gy/hxgetw',
+                'short_link' => 'rb.gy/hxgetw',
             ],
             [
                 'link' => 'youtube.com/channel/UCAK4GdcCGHomctHedQNaYQw',
-                'short_link' => 'https://rb.gy/3f0i4q',
+                'short_link' => 'rb.gy/3f0i4q',
             ],
         ]);
     }
