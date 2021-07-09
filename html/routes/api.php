@@ -34,5 +34,5 @@ Route::group([
     'middleware' => 'JWT',
     'namespace' => 'App\Http\Controllers\API',
 ], function () {
-    Route::apiResource('/links', 'LinkController')->only(['index', 'show']);;
+    Route::apiResource('/links', 'LinkController')->only(['index', 'store']);;
 });
