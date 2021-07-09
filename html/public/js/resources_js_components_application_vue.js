@@ -131,7 +131,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    saveLink: function saveLink(link, shortLink) {
+    saveLink: function saveLink() {
       var _this3 = this;
 
       var config = {

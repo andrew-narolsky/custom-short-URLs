@@ -112,7 +112,7 @@
                     }
                 );
             },
-            saveLink(link, shortLink) {
+            saveLink() {
                 const config = {
                     headers: { Authorization: 'Bearer' + AppStorage.getToken() }
                 };
