@@ -24,8 +24,15 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'JWT',
     'namespace' => 'App\Http\Controllers\API',
 ], function ($router) {
     Route::post('make-link', 'MakeLinkController@index');
+});
+
+Route::group([
+    'middleware' => 'JWT',
+    'namespace' => 'App\Http\Controllers\API',
+], function () {
+    Route::apiResource('/links', 'LinkController')->only(['index', 'show']);;
 });
