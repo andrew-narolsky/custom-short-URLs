@@ -1,13 +1,13 @@
 export const routes = [
     // Application
     {
-        path: '/application',
+        path: '/',
         component: () => import('./components/application'),
         name: 'application'
     },
     // Auth
     {
-        path: '/',
+        path: '/login',
         component: () => import('./components/auth/login'),
         name: 'login'
     },

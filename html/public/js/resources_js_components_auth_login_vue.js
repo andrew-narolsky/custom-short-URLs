@@ -42,7 +42,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   created: function created() {
     if (User.loggedIn()) {
-      this.$router.push('/application');
+      this.$router.push('/');
     }
   },
   data: function data() {
@@ -65,7 +65,7 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Signed in successfully'
         });
 
-        _this.$router.push('application');
+        _this.$router.push('/');
       })["catch"](function (error) {
         _this.errors = error.response.data.errors;
         Toast.fire({

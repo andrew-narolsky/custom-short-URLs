@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
       icon: 'success',
       title: 'Logout successfully'
     });
-    this.$router.push('/');
+    this.$router.push('/login');
   }
 });
 

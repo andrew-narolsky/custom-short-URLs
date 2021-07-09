@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/application', function () {
+Route::get('/login', function () {
     return view('welcome');
 });

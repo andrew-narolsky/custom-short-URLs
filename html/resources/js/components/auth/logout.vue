@@ -10,7 +10,7 @@
                 icon: 'success',
                 title: 'Logout successfully'
             });
-            this.$router.push('/');
+            this.$router.push('/login');
         }
     }
 </script>

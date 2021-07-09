@@ -30,7 +30,7 @@
     export default {
         created() {
             if (User.loggedIn()) {
-                this.$router.push('/application');
+                this.$router.push('/');
             }
         },
         data: () => ({
@@ -49,7 +49,7 @@
                             icon: 'success',
                             title: 'Signed in successfully'
                         });
-                        this.$router.push('application');
+                        this.$router.push('/');
                     })
                     .catch(error => {
                         this.errors = error.response.data.errors;

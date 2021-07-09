@@ -18,7 +18,7 @@
     export default {
         created() {
             if (!User.loggedIn()) {
-                this.$router.push('/');
+                this.$router.push('/login');
             }
         },
     }
@@ -28,5 +28,8 @@
     .navbar {
         display: flex;
         justify-content: space-between;
+    }
+    .card {
+        margin-top: 10%;
     }
 </style>
