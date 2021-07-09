@@ -25,6 +25,26 @@
                 </form>
             </div>
         </div>
+        <div class="card">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width:20%">ID</th>
+                        <th style="width:40%;">Link</th>
+                        <th style="width:40%;">Short link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="link in links" :key="link.id">
+                        <td>{{ link.id }}</td>
+                        <td>{{ link.link }}</td>
+                        <td>
+                            <a :href="link.short_link">{{ link.short_link }}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -34,8 +54,10 @@
             if (!User.loggedIn()) {
                 this.$router.push('/login');
             }
+            this.getLinks();
         },
         data: () => ({
+            links: {},
             form: {
                 link: ''
             },
@@ -63,6 +85,20 @@
                         });
                     }
                 );
+            },
+            getLinks() {
+                const config = {
+                    headers: { Authorization: 'Bearer' + AppStorage.getToken() }
+                };
+                axios.get('/api/links', config)
+                    .then(response => {
+                        this.links = response.data;
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    }
+                );
             }
         }
     }
@@ -74,6 +110,6 @@
         justify-content: space-between;
     }
     .card {
-        margin-top: 10%;
+        margin-top: 50px;
     }
 </style>

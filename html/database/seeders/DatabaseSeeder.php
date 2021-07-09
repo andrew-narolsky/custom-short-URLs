@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // Create Admin
         $this->call(UserSeeder::class);
+        // Add links
+        $this->call(LinkSeeder::class);
     }
 }
